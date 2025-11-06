@@ -1,0 +1,27 @@
+/*
+ * Copyright (c) 2025 Zhenyu Yang <yangzhenyu@sust.edu.cn>
+ * All rights reserved.
+ *
+ * This source code is the property of Zhenyu Yang.
+ * Unauthorized copying, modification, or distribution of this file,
+ * via any medium, is strictly prohibited.
+ *
+ * Url: https://github.com/zyang4418/web-eos-project
+ */
+
+:root {
+    --primary-blue: #1a365d;
+    --tech-blue: #3182ce;
+}
+
+body {
+    font-family: 'Noto Sans SC', sans-serif;
+}
+
+#particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0.6;
+} 

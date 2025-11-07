@@ -14,6 +14,7 @@ let calcDisplay = '0';
 let calcHistory = [];
 
 function initializeApp() {
+    initParticles();
     initCalculator();
 }
 

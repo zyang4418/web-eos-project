@@ -56,7 +56,7 @@ function calculate() {
         updateCalcDisplay();
         updateCalcHistory();
     } catch (error) {
-        calcDisplay = '错误';
+        calcDisplay = 'Error';
         updateCalcDisplay();
         setTimeout(() => {
             calcDisplay = '0';
@@ -75,7 +75,7 @@ function updateCalcDisplay() {
 function updateCalcHistory() {
     const historyElement = document.getElementById('calc-history');
     if (historyElement) {
-        historyElement.textContent = calcHistory.length > 0 ? calcHistory[0] : '无';
+        historyElement.textContent = calcHistory.length > 0 ? calcHistory[0] : 'None';
     }
 }
 

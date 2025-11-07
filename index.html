@@ -1,8 +1,9 @@
 <!-- 
   Copyright (c) 2025 Zhenyu Yang <yangzhenyu@sust.edu.cn>
+  Copyright (c) 2025 Yuchen Wu <chemistry985211@163.com>
   All rights reserved.
 
-  This source code is the property of Zhenyu Yang.
+  This source code is the property of Zhenyu Yang and Yuchen Wu.
   Unauthorized copying, modification, or distribution of this file,
   via any medium, is strictly prohibited.
 
@@ -35,6 +36,48 @@
             <div class="text-white text-xl font-bold">web-eos-project</div>
         </div>
     </nav>
+
+    <!-- Calculator -->
+    <section class="py-20 px-6">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold text-white text-center mb-16 reveal">Calculator</h2>
+            
+            <div class="calculator reveal">
+                <div class="mb-4">
+                    <input type="text" id="calc-display" class="w-full p-4 text-2xl text-right border-2 border-gray-300 rounded-lg bg-gray-50" readonly value="0">
+                </div>
+                
+                <div class="grid grid-cols-4 gap-3">
+                    <button class="calc-button" onclick="clearCalc()">C</button>
+                    <button class="calc-button" onclick="appendToDisplay('/')">/</button>
+                    <button class="calc-button" onclick="appendToDisplay('*')">×</button>
+                    <button class="calc-button" onclick="deleteLast()">←</button>
+                    
+                    <button class="calc-button" onclick="appendToDisplay('7')">7</button>
+                    <button class="calc-button" onclick="appendToDisplay('8')">8</button>
+                    <button class="calc-button" onclick="appendToDisplay('9')">9</button>
+                    <button class="calc-button" onclick="appendToDisplay('-')">-</button>
+                    
+                    <button class="calc-button" onclick="appendToDisplay('4')">4</button>
+                    <button class="calc-button" onclick="appendToDisplay('5')">5</button>
+                    <button class="calc-button" onclick="appendToDisplay('6')">6</button>
+                    <button class="calc-button" onclick="appendToDisplay('+')">+</button>
+                    
+                    <button class="calc-button" onclick="appendToDisplay('1')">1</button>
+                    <button class="calc-button" onclick="appendToDisplay('2')">2</button>
+                    <button class="calc-button" onclick="appendToDisplay('3')">3</button>
+                    <button class="calc-button row-span-2" onclick="calculate()">=</button>
+                    
+                    <button class="calc-button col-span-2" onclick="appendToDisplay('0')">0</button>
+                    <button class="calc-button" onclick="appendToDisplay('.')">.</button>
+                </div>
+                
+                <div class="mt-4 text-sm text-gray-600">
+                    <div>History: <span id="calc-history">None</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <footer class="bg-gray-900 text-white py-12 px-6">
     

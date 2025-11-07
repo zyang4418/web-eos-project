@@ -1,8 +1,9 @@
 /*
  * Copyright (c) 2025 Zhenyu Yang <yangzhenyu@sust.edu.cn>
+ * Copyright (c) 2025 Yuchen Wu <chemistry985211@163.com>
  * All rights reserved.
  *
- * This source code is the property of Zhenyu Yang.
+ * This source code is the property of Zhenyu Yang and Yuchen Wu.
  * Unauthorized copying, modification, or distribution of this file,
  * via any medium, is strictly prohibited.
  *
@@ -24,4 +25,13 @@ body {
     left: 0;
     z-index: -1;
     opacity: 0.6;
-} 
+}
+
+.calculator {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+

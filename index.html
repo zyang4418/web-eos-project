@@ -31,11 +31,33 @@
 </head>
 <body class="text-gray-800">
     <div id="particles-canvas"></div>
+
     <nav class="glass-nav fixed top-0 left-0 right-0 z-50 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="text-white text-xl font-bold">web-eos-project</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="./index.html" class="text-white hover:text-teal-300 transition-colors">Homepage</a>
+            </div>
         </div>
     </nav>
+
+    <section class="min-h-screen flex items-center justify-center pt-20 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="text-center md:text-left">
+                <h1 class="hero-title text-5xl md:text-7xl font-bold mb-6">
+                    <span id="typed-text"></span>
+                </h1>
+                <p class="text-white text-xl mb-8 leading-relaxed">
+                    Welcome to the web-eos-project homepage! 
+                </p>
+
+                <!-- Clock -->
+                <div class="mt-8 text-white">
+                <div id="current-time" class="text-2xl font-mono"></div>
+                <div id="current-date" class="text-lg opacity-80"></div>
+            </div>
+        </div>
+    </section>
 
     <!-- Calculator -->
     <section class="py-20 px-6">

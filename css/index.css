@@ -13,10 +13,31 @@
 :root {
     --primary-blue: #1a365d;
     --tech-blue: #3182ce;
+    --teal: #38b2ac;
+    --purple: #805ad5;
+    --dark-gray: #2d3748;
+    --light-gray: #e2e8f0;
+    --accent-orange: #ed8936;
 }
 
 body {
     font-family: 'Noto Sans SC', sans-serif;
+}
+
+.hero-title {
+    font-family: 'Noto Serif SC', serif;
+    background: linear-gradient(45deg, var(--teal), var(--purple), var(--accent-orange));
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease-in-out infinite;
+}
+
+.glass-nav {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 #particles-canvas {

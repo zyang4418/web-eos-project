@@ -78,3 +78,23 @@ function updateCalcHistory() {
         historyElement.textContent = calcHistory.length > 0 ? calcHistory[0] : '无';
     }
 }
+
+// Date and Time Function
+function updateDateTime() {
+    const now = new Date();
+    const timeElement = document.getElementById('current-time');
+    const dateElement = document.getElementById('current-date');
+    
+    if (timeElement) {
+        timeElement.textContent = now.toLocaleTimeString('en');
+    }
+    
+    if (dateElement) {
+        dateElement.textContent = now.toLocaleDateString('en', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            weekday: 'long'
+        });
+    }
+}

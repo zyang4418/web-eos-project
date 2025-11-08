@@ -22,6 +22,8 @@
 
 body {
     font-family: 'Noto Sans', sans-serif;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--tech-blue) 100%);
+    min-height: 100vh;
 }
 
 .hero-title {
@@ -34,10 +36,35 @@ body {
     animation: gradientShift 3s ease-in-out infinite;
 }
 
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
 .glass-nav {
     backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.floating-element {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s ease;
 }
 
 #particles-canvas {

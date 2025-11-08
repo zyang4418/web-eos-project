@@ -10,6 +10,7 @@
  * Url: https://github.com/zyang4418/web-eos-project
  */
 
+// Global variables
 let skillChart = null;
 let currentTheme = 'light';
 let calcDisplay = '0';
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
 });
 
+// Main initialization function
 function initializeApp() {
     initParticles();
     initTypedText();

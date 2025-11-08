@@ -206,3 +206,21 @@ function toggleTheme() {
         themeToggle.textContent = currentTheme === 'light' ? '🌙' : '☀️';
     }
 }
+
+// Listen for keyboard input
+document.addEventListener('keydown', function(e) {    
+    // Calculator input
+    if (e.key >= '0' && e.key <= '9') {
+        appendToDisplay(e.key);
+    } else if (e.key === '.') {
+        appendToDisplay('.');
+    } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+        appendToDisplay(e.key);
+    } else if (e.key === 'Enter' || e.key === '=') {
+        calculate();
+    } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') {
+        clearCalc();
+    } else if (e.key === 'Backspace') {
+        deleteLast();
+    }
+});

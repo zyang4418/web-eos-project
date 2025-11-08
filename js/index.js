@@ -10,6 +10,8 @@
  * Url: https://github.com/zyang4418/web-eos-project
  */
 
+let skillChart = null;
+let currentTheme = 'light';
 let calcDisplay = '0';
 let calcHistory = [];
 
@@ -191,5 +193,16 @@ function updateDateTime() {
             day: 'numeric',
             weekday: 'long'
         });
+    }
+}
+
+// Theme toggle function
+function toggleTheme() {
+    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.body.classList.toggle('dark-theme');
+    
+    const themeToggle = document.querySelector('.theme-toggle');
+    if (themeToggle) {
+        themeToggle.textContent = currentTheme === 'light' ? '🌙' : '☀️';
     }
 }

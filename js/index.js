@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializeApp() {
     initParticles();
+    initTypedText();
     initCalculator();
     updateDateTime();
 
@@ -91,6 +92,24 @@ function initParticles() {
     };
     
     new p5(sketch);
+}
+
+// Typed text animation
+function initTypedText() {
+    const typed = new Typed('#typed-text', {
+        strings: [
+            'Front-end developer',
+            'Web enthusiast',
+            'Open-source contributor',
+            'Tech blogger'
+        ],
+        typeSpeed: 80,
+        backSpeed: 50,
+        backDelay: 2000,
+        loop: true,
+        showCursor: true,
+        cursorChar: '|'
+    });
 }
 
 // Calculator functions

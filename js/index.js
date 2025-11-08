@@ -224,3 +224,28 @@ document.addEventListener('keydown', function(e) {
         deleteLast();
     }
 });
+
+// Save calculator history before unload
+window.addEventListener('beforeunload', function() {
+    // Save only if there is history
+    if (calcHistory.length > 0) {
+        localStorage.setItem('calcHistory', JSON.stringify(calcHistory));
+    }
+});
+
+// Load calculator history and theme on load
+window.addEventListener('load', function() {
+    
+    // Load saved calculator history
+    const savedHistory = localStorage.getItem('calcHistory');
+    if (savedHistory) {
+        calcHistory = JSON.parse(savedHistory);
+        updateCalcHistory();
+    }
+    
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme && savedTheme !== currentTheme) {
+        toggleTheme();
+    }
+});

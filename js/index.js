@@ -17,7 +17,14 @@ let calcHistory = [];
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+        currentTheme = savedTheme;
+    }
+
     initializeApp();
+    applyTheme(currentTheme);
+    restoreCalcHistory();
 });
 
 // Main initialization function
@@ -199,13 +206,25 @@ function updateDateTime() {
 
 // Theme toggle function
 function toggleTheme() {
-    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-    document.body.classList.toggle('dark-theme');
-    
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    applyTheme(newTheme);
+}
+
+function applyTheme(theme) {
+    currentTheme = theme;
+    const isDarkTheme = theme === 'dark';
+
+    document.body.classList.toggle('dark-theme', isDarkTheme);
+
     const themeToggle = document.querySelector('.theme-toggle');
     if (themeToggle) {
-        themeToggle.textContent = currentTheme === 'light' ? '🌙' : '☀️';
+        themeToggle.textContent = isDarkTheme ? '☀️' : '🌙';
+        const toggleLabel = isDarkTheme ? 'Switch to light theme' : 'Switch to dark theme';
+        themeToggle.setAttribute('aria-label', toggleLabel);
+        themeToggle.setAttribute('title', toggleLabel);
     }
+
+    localStorage.setItem('theme', theme);
 }
 
 // Listen for keyboard input
@@ -234,19 +253,19 @@ window.addEventListener('beforeunload', function() {
     }
 });
 
-// Load calculator history and theme on load
-window.addEventListener('load', function() {
-    
-    // Load saved calculator history
+function restoreCalcHistory() {
     const savedHistory = localStorage.getItem('calcHistory');
-    if (savedHistory) {
-        calcHistory = JSON.parse(savedHistory);
-        updateCalcHistory();
+    if (!savedHistory) {
+        return;
     }
-    
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme && savedTheme !== currentTheme) {
-        toggleTheme();
+
+    try {
+        const parsedHistory = JSON.parse(savedHistory);
+        if (Array.isArray(parsedHistory)) {
+            calcHistory = parsedHistory;
+            updateCalcHistory();
+        }
+    } catch (error) {
+        console.error('Failed to restore calculator history:', error);
     }
-});
+}

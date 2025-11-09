@@ -11,7 +11,6 @@
  */
 
 // Global variables
-let skillChart = null;
 let currentTheme = 'light';
 let calcDisplay = '0';
 let calcHistory = [];
@@ -102,10 +101,10 @@ function initParticles() {
 function initTypedText() {
     const typed = new Typed('#typed-text', {
         strings: [
-            'Front-end developer',
-            'Web enthusiast',
-            'Open-source contributor',
-            'Tech blogger'
+            'Hello, World!',
+            'web-eos-project',
+            'Client-Side Development',
+            'Interactive Web Authoring',
         ],
         typeSpeed: 80,
         backSpeed: 50,

@@ -1,4 +1,4 @@
-<!-- 
+<!--
   Copyright (c) 2025 Zhenyu Yang <yangzhenyu@sust.edu.cn>
   Copyright (c) 2025 Yuchen Wu <chemistry985211@163.com>
   All rights reserved.
@@ -15,31 +15,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About</title>
+    <title>Contact</title>
     <script type="text/javascript" src="../libs/anime.min.js"></script>
     <script type="text/javascript" src="../libs/matter.min.js"></script>
     <script type="text/javascript" src="../libs/p5.min.js"></script>
+    <script type="text/javascript" src="../libs/pixi.min.js"></script>
     <script type="text/javascript" src="../libs/tailwind.js"></script>
+    <script type="text/javascript" src="../libs/typed.min.js"></script>
     <link rel="stylesheet" href="../libs/fonts.css">
     <link rel="stylesheet" href="../css/contact.css">
 </head>
 <body class="text-gray-800">
-    <div id="pixi-background"></div>
+    <div id="particles-canvas"></div>
+
+    <button class="theme-toggle" type="button" aria-label="Switch to dark theme" onclick="toggleTheme()">🌙</button>
 
     <nav class="glass-nav fixed top-0 left-0 right-0 z-50 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="text-white text-xl font-bold">web-eos-project</div>
+            <div class="text-white text-xl font-bold">Web EOS Project</div>
             <div class="hidden md:flex space-x-8">
                 <a href="../index.html" class="text-white hover:text-teal-300 transition-colors">Homepage</a>
                 <a href="../html/about.html" class="text-white hover:text-teal-300 transition-colors">About</a>
                 <a href="../html/contact.html" class="text-white hover:text-teal-300 transition-colors">Contact</a>
             </div>
+
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="text-white" aria-label="Toggle navigation menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+            <a href="../index.html" class="block text-white py-2 hover:text-teal-300">Homepage</a>
+            <a href="../html/about.html" class="block text-white py-2 hover:text-teal-300">About</a>
+            <a href="../html/contact.html" class="block text-white py-2 hover:text-teal-300">Contact</a>
         </div>
     </nav>
 
+    <section class="min-h-screen flex items-center justify-center pt-20 px-6 content-section">
+        <div class="max-w-4xl mx-auto text-center text-white space-y-6">
+            <h1 class="hero-title text-4xl md:text-6xl font-bold">
+                <span id="typed-text"></span>
+            </h1>
+            <p class="text-lg md:text-xl opacity-90">A matching template ready for future contact information.</p>
+        </div>
+    </section>
+
     <footer class="bg-gray-900 text-white py-12 px-6">
         <div class="max-w-7xl mx-auto text-center">
-        
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold mb-4">Web EOS Project</h3>
+                <p class="text-gray-400">An EOS project for Client-Side Development (Interactive Web Authoring)</p>
+            </div>
+            <div class="border-t border-gray-700 pt-8">
+                <p class="text-gray-400">Copyright &copy; 2025 Zhenyu Yang &amp; Yuchen Wu All rights reserved.</p>
+            </div>
         </div>
     </footer>
+
+    <script type="text/javascript" src="../js/contact.js"></script>
 </body>
+</html>

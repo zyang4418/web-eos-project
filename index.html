@@ -15,7 +15,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Homepage - Web EOS Project</title>
     <script type="text/javascript" src="./libs/anime.min.js"></script>      <!-- Animation library -->
     <script type="text/javascript" src="./libs/echarts.min.js"></script>    <!-- Charting library -->
     <script type="text/javascript" src="./libs/matter.min.js"></script>     <!-- Physics engine -->
@@ -39,12 +39,27 @@
     <!-- Navigation bar -->
     <nav class="glass-nav fixed top-0 left-0 right-0 z-50 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="text-white text-xl font-bold">web-eos-project</div>
+            <div class="text-white text-xl font-bold">Web EOS Project</div>
             <div class="hidden md:flex space-x-8">
                 <a href="./index.html" class="text-white hover:text-teal-300 transition-colors">Homepage</a>
                 <a href="./html/about.html" class="text-white hover:text-teal-300 transition-colors">About</a>
                 <a href="./html/contact.html" class="text-white hover:text-teal-300 transition-colors">Contact</a>
             </div>
+
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+            <a href="./index.html" class="block text-white py-2 hover:text-teal-300">Homepage</a>
+            <a href="./html/about.html" class="block text-white py-2 hover:text-teal-300">About</a>
+            <a href="./html/contact.html" class="block text-white py-2 hover:text-teal-300">Contact</a>
         </div>
     </nav>
 
@@ -55,7 +70,7 @@
                     <span id="typed-text"></span>
                 </h1>
                 <p class="text-white text-xl mb-8 leading-relaxed">
-                    Welcome to the web-eos-project homepage! 
+                    Welcome to the our Web EOS project homepage! 
                 </p>
 
                 <!-- Clock -->
@@ -111,7 +126,7 @@
     <footer class="bg-gray-900 text-white py-12 px-6">
         <div class="max-w-7xl mx-auto text-center">
             <div class="mb-8">
-                <h3 class="text-2xl font-bold mb-4">web-eos-project</h3>
+                <h3 class="text-2xl font-bold mb-4">Web EOS Project</h3>
                 <p class="text-gray-400">An EOS project for Client-Side Development (Interactive Web Authoring)</p>
             </div>
             <div class="border-t border-gray-700 pt-8">

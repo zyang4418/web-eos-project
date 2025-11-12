@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeApp() {
     initParticles();
     initTypedText();
+    initMobileMenu();
     initCalculator();
     updateDateTime();
 
@@ -109,7 +110,7 @@ function initTypedText() {
     const typed = new Typed('#typed-text', {
         strings: [
             'Hello, World!',
-            'web-eos-project',
+            'Web EOS Project',
             'Client-Side Development',
             'Interactive Web Authoring',
         ],
@@ -119,6 +120,16 @@ function initTypedText() {
         loop: true,
         showCursor: true,
         cursorChar: '|'
+    });
+}
+
+// Mobile menu toggle
+function initMobileMenu() {
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
     });
 }
 
@@ -184,6 +195,50 @@ function updateCalcHistory() {
     }
 }
 
+// Listen for keyboard input
+document.addEventListener('keydown', function(e) {    
+    // Calculator input
+    if (e.key >= '0' && e.key <= '9') {
+        appendToDisplay(e.key);
+    } else if (e.key === '.') {
+        appendToDisplay('.');
+    } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+        appendToDisplay(e.key);
+    } else if (e.key === 'Enter' || e.key === '=') {
+        calculate();
+    } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') {
+        clearCalc();
+    } else if (e.key === 'Backspace') {
+        deleteLast();
+    }
+});
+
+// Save calculator history before unload
+window.addEventListener('beforeunload', function() {
+    // Save only if there is history
+    if (calcHistory.length > 0) {
+        localStorage.setItem('calcHistory', JSON.stringify(calcHistory));
+    }
+});
+
+// Restore calculator history on load
+function restoreCalcHistory() {
+    const savedHistory = localStorage.getItem('calcHistory');
+    if (!savedHistory) {
+        return;
+    }
+
+    try {
+        const parsedHistory = JSON.parse(savedHistory);
+        if (Array.isArray(parsedHistory)) {
+            calcHistory = parsedHistory;
+            updateCalcHistory();
+        }
+    } catch (error) {
+        console.error('Failed to restore calculator history:', error);
+    }
+}
+
 // Date and time function
 function updateDateTime() {
     const now = new Date();
@@ -225,47 +280,4 @@ function applyTheme(theme) {
     }
 
     localStorage.setItem('theme', theme);
-}
-
-// Listen for keyboard input
-document.addEventListener('keydown', function(e) {    
-    // Calculator input
-    if (e.key >= '0' && e.key <= '9') {
-        appendToDisplay(e.key);
-    } else if (e.key === '.') {
-        appendToDisplay('.');
-    } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
-        appendToDisplay(e.key);
-    } else if (e.key === 'Enter' || e.key === '=') {
-        calculate();
-    } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') {
-        clearCalc();
-    } else if (e.key === 'Backspace') {
-        deleteLast();
-    }
-});
-
-// Save calculator history before unload
-window.addEventListener('beforeunload', function() {
-    // Save only if there is history
-    if (calcHistory.length > 0) {
-        localStorage.setItem('calcHistory', JSON.stringify(calcHistory));
-    }
-});
-
-function restoreCalcHistory() {
-    const savedHistory = localStorage.getItem('calcHistory');
-    if (!savedHistory) {
-        return;
-    }
-
-    try {
-        const parsedHistory = JSON.parse(savedHistory);
-        if (Array.isArray(parsedHistory)) {
-            calcHistory = parsedHistory;
-            updateCalcHistory();
-        }
-    } catch (error) {
-        console.error('Failed to restore calculator history:', error);
-    }
 }

@@ -93,8 +93,30 @@ function initMobileMenu() {
         return;
     }
 
+    const handleTransitionEnd = (event) => {
+        if (event.propertyName !== 'max-height') {
+            return;
+        }
+
+        if (!mobileMenu.classList.contains('open')) {
+            mobileMenu.classList.add('hidden');
+        }
+
+        mobileMenu.removeEventListener('transitionend', handleTransitionEnd);
+    };
+
     mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
+        const isMenuOpen = mobileMenu.classList.contains('open') && !mobileMenu.classList.contains('hidden');
+
+        if (!isMenuOpen) {
+            mobileMenu.classList.remove('hidden');
+            mobileMenu.removeEventListener('transitionend', handleTransitionEnd);
+            void mobileMenu.offsetHeight;
+            mobileMenu.classList.add('open');
+        } else {
+            mobileMenu.classList.remove('open');
+            mobileMenu.addEventListener('transitionend', handleTransitionEnd);
+        }
     });
 }
 

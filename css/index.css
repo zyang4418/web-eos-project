@@ -61,6 +61,22 @@ body.dark-theme {
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.mobile-menu {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.mobile-menu.open {
+    max-height: 240px;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
 .floating-element {
     animation: float 6s ease-in-out infinite;
 }

@@ -21,7 +21,7 @@ window.addEventListener('DOMContentLoaded', () => {
     applyTheme(currentTheme);
     initParticles();
     initMobileMenu();
-    initTypedText();
+    initContactForm();
 });
 
 function initParticles() {
@@ -119,28 +119,61 @@ function initMobileMenu() {
     });
 }
 
-function initTypedText() {
-    if (typeof Typed === 'undefined') {
+function initContactForm() {
+    const form = document.getElementById('contact-form');
+    const feedback = document.getElementById('contact-form-feedback');
+
+    if (!form) {
         return;
     }
 
-    const typedTarget = document.querySelector('#typed-text');
-    if (!typedTarget) {
-        return;
-    }
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
 
-    new Typed('#typed-text', {
-        strings: [
-            'Get in Touch',
-            'Consistent Experience Everywhere',
-            'We Would Love to Hear From You'
-        ],
-        typeSpeed: 80,
-        backSpeed: 50,
-        backDelay: 2000,
-        loop: true,
-        showCursor: true,
-        cursorChar: '|'
+        const formData = new FormData(form);
+        const name = formData.get('name').trim();
+        const email = formData.get('email').trim();
+        const subject = formData.get('subject').trim();
+        const message = formData.get('message').trim();
+        const errors = [];
+
+        if (!name) {
+            errors.push('Please enter your name.');
+        }
+
+        if (!email) {
+            errors.push('Please enter your email address.');
+        } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+            errors.push('Please enter a valid email address.');
+        }
+
+        if (!subject) {
+            errors.push('Please enter a subject.');
+        }
+
+        if (!message) {
+            errors.push('Please enter your message.');
+        }
+
+        if (errors.length > 0) {
+            if (feedback) {
+                feedback.classList.remove('hidden');
+                feedback.textContent = errors.join(' ');
+                feedback.classList.remove('text-teal-100');
+                feedback.classList.add('text-red-200');
+            }
+            return;
+        }
+
+        alert('Your message has been sent successfully!');
+        form.reset();
+
+        if (feedback) {
+            feedback.classList.remove('hidden');
+            feedback.textContent = 'Thank you! Your message has been submitted successfully.';
+            feedback.classList.remove('text-red-200');
+            feedback.classList.add('text-teal-100');
+        }
     });
 }
 

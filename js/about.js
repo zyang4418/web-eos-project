@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
     applyTheme(currentTheme);
     initParticles();
     initMobileMenu();
-    initTypedText();
+    initGitHubProfiles();
 });
 
 function initParticles() {
@@ -120,29 +120,185 @@ function initMobileMenu() {
     });
 }
 
-function initTypedText() {
-    if (typeof Typed === 'undefined') {
+async function initGitHubProfiles() {
+    const cards = document.querySelectorAll('[data-github-username]');
+    if (!cards.length) {
         return;
     }
 
-    const typedTarget = document.querySelector('#typed-text');
-    if (!typedTarget) {
-        return;
-    }
+    await Promise.all(Array.from(cards).map(async (card) => {
+        const username = card.getAttribute('data-github-username');
+        if (!username) {
+            return;
+        }
 
-    new Typed('#typed-text', {
-        strings: [
-            'About Web EOS Project',
-            'Design Consistency Across Pages',
-            'Elegant and Modern Interfaces'
-        ],
-        typeSpeed: 80,
-        backSpeed: 50,
-        backDelay: 2000,
-        loop: true,
-        showCursor: true,
-        cursorChar: '|'
-    });
+        await populateGitHubCard(card, username);
+    }));
+}
+
+async function populateGitHubCard(card, username) {
+    const elements = {
+        avatar: card.querySelector('[data-role="avatar"]'),
+        name: card.querySelector('[data-role="name"]'),
+        username: card.querySelector('[data-role="username"]'),
+        bio: card.querySelector('[data-role="bio"]'),
+        publicRepos: card.querySelector('[data-role="public-repos"]'),
+        followers: card.querySelector('[data-role="followers"]'),
+        reposList: card.querySelector('[data-role="repos"]'),
+        meta: card.querySelector('[data-role="meta"]')
+    };
+
+    const userEndpoint = `https://api.github.com/users/${encodeURIComponent(username)}`;
+    const reposEndpoint = `https://api.github.com/users/${encodeURIComponent(username)}/repos?per_page=100&sort=updated`;
+
+    try {
+        const [userResponse, reposResponse] = await Promise.all([
+            fetch(userEndpoint),
+            fetch(reposEndpoint)
+        ]);
+
+        if (!userResponse.ok) {
+            throw new Error(`Failed to load profile (${userResponse.status})`);
+        }
+
+        if (!reposResponse.ok) {
+            throw new Error(`Failed to load repositories (${reposResponse.status})`);
+        }
+
+        const userData = await userResponse.json();
+        const reposData = await reposResponse.json();
+
+        const displayName = userData.name || userData.login || username;
+
+        if (elements.avatar) {
+            elements.avatar.src = userData.avatar_url || '';
+            elements.avatar.alt = `${displayName}'s avatar`;
+        }
+
+        if (elements.name) {
+            elements.name.textContent = displayName;
+        }
+
+        if (elements.username) {
+            elements.username.href = userData.html_url || `https://github.com/${username}`;
+            elements.username.textContent = `@${userData.login || username}`;
+        }
+
+        if (elements.bio) {
+            elements.bio.textContent = userData.bio || 'This developer has not added a bio yet.';
+        }
+
+        if (elements.publicRepos) {
+            elements.publicRepos.textContent = typeof userData.public_repos === 'number' ? userData.public_repos.toLocaleString() : '–';
+        }
+
+        if (elements.followers) {
+            elements.followers.textContent = typeof userData.followers === 'number' ? userData.followers.toLocaleString() : '–';
+        }
+
+        if (elements.meta) {
+            elements.meta.innerHTML = '';
+
+            if (userData.company) {
+                const companyLine = document.createElement('div');
+                companyLine.textContent = `🏢 ${userData.company}`;
+                elements.meta.appendChild(companyLine);
+            }
+
+            if (userData.location) {
+                const locationLine = document.createElement('div');
+                locationLine.textContent = `📍 ${userData.location}`;
+                elements.meta.appendChild(locationLine);
+            }
+
+            if (userData.blog) {
+                const blogUrl = userData.blog.startsWith('http') ? userData.blog : `https://${userData.blog}`;
+                const blogLine = document.createElement('div');
+                const blogAnchor = document.createElement('a');
+                blogAnchor.href = blogUrl;
+                blogAnchor.target = '_blank';
+                blogAnchor.rel = 'noopener';
+                blogAnchor.className = 'text-teal-200 hover:text-teal-100';
+                blogAnchor.textContent = blogUrl;
+                blogLine.textContent = '🔗 ';
+                blogLine.appendChild(blogAnchor);
+                elements.meta.appendChild(blogLine);
+            }
+
+            elements.meta.style.display = elements.meta.childElementCount ? '' : 'none';
+        }
+
+        if (elements.reposList) {
+            const topRepos = Array.isArray(reposData)
+                ? reposData
+                    .filter((repo) => !repo.fork)
+                    .sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0))
+                    .slice(0, 3)
+                : [];
+
+            elements.reposList.innerHTML = '';
+
+            if (!topRepos.length) {
+                const emptyItem = document.createElement('li');
+                emptyItem.className = 'text-white/60';
+                emptyItem.textContent = 'No highlighted repositories available yet.';
+                elements.reposList.appendChild(emptyItem);
+            } else {
+                topRepos.forEach((repo) => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'flex flex-col gap-1 rounded-2xl bg-white/5 px-4 py-3';
+
+                    const repoLink = document.createElement('a');
+                    repoLink.href = repo.html_url;
+                    repoLink.target = '_blank';
+                    repoLink.rel = 'noopener';
+                    repoLink.className = 'text-teal-200 hover:text-teal-100 font-medium transition';
+                    repoLink.textContent = repo.name;
+
+                    const repoMeta = document.createElement('div');
+                    repoMeta.className = 'text-xs text-white/70 flex flex-wrap gap-3';
+
+                    const stars = document.createElement('span');
+                    stars.textContent = `⭐ ${repo.stargazers_count}`;
+                    repoMeta.appendChild(stars);
+
+                    if (repo.language) {
+                        const language = document.createElement('span');
+                        language.textContent = repo.language;
+                        repoMeta.appendChild(language);
+                    }
+
+                    const updated = document.createElement('span');
+                    const updatedDate = repo.pushed_at ? new Date(repo.pushed_at) : null;
+                    if (updatedDate) {
+                        updated.textContent = `Updated ${updatedDate.toLocaleDateString()}`;
+                        repoMeta.appendChild(updated);
+                    }
+
+                    listItem.appendChild(repoLink);
+                    listItem.appendChild(repoMeta);
+                    elements.reposList.appendChild(listItem);
+                });
+            }
+        }
+    } catch (error) {
+        if (elements.bio) {
+            elements.bio.textContent = 'Unable to load GitHub profile details at this time.';
+        }
+
+        if (elements.reposList) {
+            elements.reposList.innerHTML = '';
+            const errorItem = document.createElement('li');
+            errorItem.className = 'text-white/60';
+            errorItem.textContent = 'Unable to fetch repository information.';
+            elements.reposList.appendChild(errorItem);
+        }
+
+        if (elements.meta) {
+            elements.meta.innerHTML = '';
+            elements.meta.style.display = 'none';
+        }
+    }
 }
 
 window.toggleTheme = function toggleTheme() {

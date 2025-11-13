@@ -130,10 +130,25 @@ body.dark-theme .theme-toggle {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(15, 23, 42, 0.35);
     border-radius: 24px;
     filter: blur(20px);
     z-index: -1;
+}
+
+.profile-section {
+    isolation: isolate;
+}
+
+.profile-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    filter: blur(32px);
+    z-index: -1;
+}
+
+body.dark-theme .profile-section::before {
+    background: linear-gradient(180deg, rgba(10, 20, 38, 0.75) 0%, rgba(6, 12, 25, 0.9) 100%);
 }
 
 footer {

@@ -14,6 +14,70 @@
 let currentTheme = 'light';
 let calcDisplay = '0';
 let calcHistory = [];
+let lastGreetingPeriod = null;
+
+const greetingsByPeriod = {
+    morning: [
+        'Good morning, a brand-new day is waiting for your brilliance.',
+        'May the first light of the morning bring you a wonderful mood.',
+        'Wishing everything today goes just the way you hope.',
+        'Good morning—don’t forget to take your smile with you.',
+        'May your steps be light today, and your heart feel bright.',
+        'A new day—may kindness surround you.',
+        'Morning! I hope good news finds you as soon as you wake.',
+        'May even the small things today make you quietly happy.',
+        'Wishing you a sunny mood today, free of winds and storms.',
+        'Good morning—hope every click today feels light and full of anticipation.',
+    ],
+    noon: [
+        'Good noon—take care of yourself and treat your body to something it likes.',
+        'You’ve worked hard—take a moment to rest before going on.',
+        'May your noon bring you some comfort and some warmth.',
+        'Good noon—give yourself a minute or two to breathe.',
+        'Hope your afternoon self stays in great shape.',
+        'It’s lunchtime—reward yourself for the effort you’ve made.',
+        'Good noon—I hope your heart feels gently filled.',
+        'Remember, you deserve moments of ease.',
+        'The midday sun is just right—may it warm your heart too.',
+        'Good noon—may your busy day be wrapped in gentleness.',
+    ],
+    afternoon: [
+        'Good afternoon—you’ve already done great today.',
+        'I hope you feel calm and steady at this moment.',
+        'The afternoon breeze is soft—may it reach your heart too.',
+        'If you\'re tired, blink, stretch, and relax a little.',
+        'Good afternoon—things will slowly get better.',
+        'May your heart stay soft, yet strong.',
+        'Keep going this afternoon, but remember to be kind to yourself.',
+        'I hope the hours ahead treat you gently.',
+        'A tiny pause can make your heart feel lighter.',
+        'Good afternoon—may your little wishes come true bit by bit.',
+    ],
+    evening: [
+        'Good evening—you’ve worked hard today.',
+        'May your evening be a mix of relaxation and joy.',
+        'Gather your tiredness and let yourself unwind.',
+        'I hope you enjoy the hours before bedtime.',
+        'You did great today—don’t be too hard on yourself.',
+        'May the evening be gentle, and people kind.',
+        'Good evening—let your heart settle, it’ll feel better.',
+        'The evening breeze is soft—let it whisper “well done” to you.',
+        'Slow down and give yourself a little breathing room.',
+        'Good evening—may your night feel peaceful and free.',
+    ],
+    lateNight: [
+        'It’s late—thank you for getting through today.',
+        'May the quiet of the night gently relax you.',
+        'If you’re still awake, I hope this place keeps you company.',
+        'The night can feel cold—be gentle with yourself.',
+        'Good late night—may you feel wrapped in warmth.',
+        'The story of today can pause here—take a rest.',
+        'May your heart feel calm, soft, and understood.',
+        'Before putting down your phone, tell yourself “you did well.”',
+        'The deeper the night, the more gently you should treat yourself.',
+        'If you’re pushing through the night, may light accompany your path.',
+    ],
+};
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', function() {
@@ -270,11 +334,11 @@ function updateDateTime() {
     const now = new Date();
     const timeElement = document.getElementById('current-time');
     const dateElement = document.getElementById('current-date');
-    
+
     if (timeElement) {
         timeElement.textContent = now.toLocaleTimeString('en-US');
     }
-    
+
     if (dateElement) {
         dateElement.textContent = now.toLocaleDateString('en-US', {
             year: 'numeric',
@@ -283,6 +347,52 @@ function updateDateTime() {
             weekday: 'long'
         });
     }
+
+    updateGreeting(now);
+}
+
+function updateGreeting(now) {
+    const greetingElement = document.getElementById('greeting-message');
+    if (!greetingElement) {
+        return;
+    }
+
+    const periodKey = determineTimePeriod(now);
+    if (periodKey !== lastGreetingPeriod || greetingElement.textContent.trim() === '') {
+        const greeting = getRandomGreeting(periodKey);
+        greetingElement.textContent = greeting;
+        lastGreetingPeriod = periodKey;
+    }
+}
+
+function determineTimePeriod(now) {
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const totalMinutes = hours * 60 + minutes;
+
+    if (totalMinutes >= 300 && totalMinutes <= 659) {
+        return 'morning';
+    }
+
+    if (totalMinutes >= 660 && totalMinutes <= 839) {
+        return 'noon';
+    }
+
+    if (totalMinutes >= 840 && totalMinutes <= 1079) {
+        return 'afternoon';
+    }
+
+    if (totalMinutes >= 1080 && totalMinutes <= 1379) {
+        return 'evening';
+    }
+
+    return 'lateNight';
+}
+
+function getRandomGreeting(periodKey) {
+    const greetings = greetingsByPeriod[periodKey] || greetingsByPeriod.lateNight;
+    const index = Math.floor(Math.random() * greetings.length);
+    return greetings[index];
 }
 
 // Theme toggle function

@@ -135,6 +135,157 @@ body.dark-theme .theme-toggle {
     z-index: -1;
 }
 
+.form-field {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 0.35rem;
+    padding: 0.35rem 0.4rem;
+    border-radius: 0.9rem;
+    transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.form-field:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.label-text {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+}
+
+.field-hint {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-control {
+    width: 100%;
+    border-radius: 0.75rem;
+    padding: 0.9rem 1rem;
+    background: rgba(255, 255, 255, 0.85);
+    color: #0f172a;
+    border: 1px solid transparent;
+    transition: border 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    outline: none;
+}
+
+.input-control:focus {
+    border-color: rgba(56, 178, 172, 0.8);
+    box-shadow: 0 10px 30px rgba(56, 178, 172, 0.25);
+    transform: translateY(-1px);
+}
+
+.validation-icon {
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.form-field.is-valid .validation-icon,
+.form-field.has-error .validation-icon {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.05);
+}
+
+.form-field.is-valid .input-control {
+    border-color: rgba(56, 178, 172, 0.9);
+    box-shadow: 0 10px 30px rgba(56, 178, 172, 0.2);
+    background: rgba(236, 254, 255, 0.8);
+}
+
+.form-field.has-error .input-control {
+    border-color: rgba(248, 113, 113, 0.9);
+    box-shadow: 0 10px 30px rgba(248, 113, 113, 0.2);
+    background: rgba(255, 241, 242, 0.9);
+}
+
+.form-field.has-error .validation-icon {
+    filter: drop-shadow(0 2px 6px rgba(248, 113, 113, 0.45));
+}
+
+.field-feedback {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-4px);
+    transition: all 0.25s ease;
+}
+
+.field-feedback.visible {
+    opacity: 1;
+    max-height: 80px;
+    transform: translateY(0);
+}
+
+.field-feedback.error {
+    color: #fecdd3;
+}
+
+.field-feedback.success {
+    color: #ccfbf1;
+}
+
+.form-status {
+    width: 100%;
+    padding: 0.9rem 1.1rem;
+    border-radius: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    display: none;
+    align-items: center;
+    gap: 0.6rem;
+    backdrop-filter: blur(10px);
+}
+
+.form-status.error {
+    display: flex;
+    color: #fecdd3;
+    background: linear-gradient(135deg, rgba(254, 202, 202, 0.15), rgba(248, 113, 113, 0.15));
+    border: 1px solid rgba(248, 113, 113, 0.35);
+    box-shadow: 0 10px 25px rgba(248, 113, 113, 0.2);
+}
+
+.form-status.success {
+    display: flex;
+    color: #ccfbf1;
+    background: linear-gradient(135deg, rgba(56, 178, 172, 0.2), rgba(34, 197, 235, 0.15));
+    border: 1px solid rgba(56, 178, 172, 0.4);
+    box-shadow: 0 10px 25px rgba(34, 197, 235, 0.25);
+}
+
+.content-section::after {
+    background: radial-gradient(circle at 20% 20%, rgba(56, 178, 172, 0.15), transparent 35%),
+        radial-gradient(circle at 80% 0%, rgba(128, 90, 213, 0.18), transparent 30%),
+        radial-gradient(circle at 50% 80%, rgba(237, 137, 54, 0.14), transparent 35%);
+}
+
+.shake {
+    animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-6px); }
+}
+
 footer {
     background: rgba(15, 23, 42, 0.9);
 }

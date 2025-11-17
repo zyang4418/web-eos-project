@@ -60,26 +60,54 @@
                 <h1 class="hero-title text-4xl md:text-6xl font-bold">Contact Us</h1>
                 <p class="text-lg md:text-xl opacity-90">We would love to hear from you. Please fill out the form below and we will get back to you soon.</p>
             </div>
-            <form id="contact-form" class="bg-white/10 backdrop-blur rounded-2xl p-6 md:p-10 space-y-6 shadow-2xl">
+            <form id="contact-form" class="bg-white/10 backdrop-blur rounded-2xl p-6 md:p-10 space-y-6 shadow-2xl" novalidate>
+                <div class="form-status" id="contact-form-feedback" role="alert" aria-live="assertive"></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <label class="flex flex-col text-left text-sm uppercase tracking-wide">
-                        <span class="mb-2 font-semibold">Name</span>
-                        <input type="text" name="name" id="contact-name" class="rounded-lg px-4 py-3 bg-white/80 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-300" placeholder="Your Name" required>
+                    <label class="form-field">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="label-text">Name</span>
+                            <span class="field-hint">2+ characters</span>
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="text" name="name" id="contact-name" class="input-control" placeholder="Your Name" required minlength="2" autocomplete="name">
+                            <span class="validation-icon" aria-hidden="true"></span>
+                        </div>
+                        <p class="field-feedback" id="name-feedback"></p>
                     </label>
-                    <label class="flex flex-col text-left text-sm uppercase tracking-wide">
-                        <span class="mb-2 font-semibold">Email</span>
-                        <input type="email" name="email" id="contact-email" class="rounded-lg px-4 py-3 bg-white/80 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-300" placeholder="you@example.com" required>
+                    <label class="form-field">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="label-text">Email</span>
+                            <span class="field-hint">We never spam</span>
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="email" name="email" id="contact-email" class="input-control" placeholder="you@example.com" required autocomplete="email">
+                            <span class="validation-icon" aria-hidden="true"></span>
+                        </div>
+                        <p class="field-feedback" id="email-feedback"></p>
                     </label>
                 </div>
-                <label class="flex flex-col text-left text-sm uppercase tracking-wide">
-                    <span class="mb-2 font-semibold">Subject</span>
-                    <input type="text" name="subject" id="contact-subject" class="rounded-lg px-4 py-3 bg-white/80 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-300" placeholder="How can we help?" required>
+                <label class="form-field">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="label-text">Subject</span>
+                        <span class="field-hint">5–80 characters</span>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="text" name="subject" id="contact-subject" class="input-control" placeholder="How can we help?" required minlength="5" maxlength="80" autocomplete="off">
+                        <span class="validation-icon" aria-hidden="true"></span>
+                    </div>
+                    <p class="field-feedback" id="subject-feedback"></p>
                 </label>
-                <label class="flex flex-col text-left text-sm uppercase tracking-wide">
-                    <span class="mb-2 font-semibold">Message</span>
-                    <textarea name="message" id="contact-message" rows="5" class="rounded-lg px-4 py-3 bg-white/80 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-300" placeholder="Tell us more about your inquiry" required></textarea>
+                <label class="form-field">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="label-text">Message</span>
+                        <span class="field-hint" id="message-counter">10–500 characters</span>
+                    </div>
+                    <div class="input-wrapper">
+                        <textarea name="message" id="contact-message" rows="5" class="input-control" placeholder="Tell us more about your inquiry" required minlength="10" maxlength="500"></textarea>
+                        <span class="validation-icon" aria-hidden="true"></span>
+                    </div>
+                    <p class="field-feedback" id="message-feedback"></p>
                 </label>
-                <div id="contact-form-feedback" class="text-red-200 text-sm hidden" role="alert"></div>
                 <button type="submit" class="w-full md:w-auto inline-flex justify-center items-center px-8 py-3 rounded-lg bg-teal-400 text-gray-900 font-semibold tracking-wide shadow-lg hover:bg-teal-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent focus:ring-teal-200 transition">Submit</button>
             </form>
         </div>

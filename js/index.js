@@ -6,11 +6,10 @@
  * This source code is the property of Zhenyu Yang and Yuchen Wu.
  * Unauthorized copying, modification, or distribution of this file,
  * via any medium, is strictly prohibited.
- * 
+ *
  * Url: https://github.com/zyang4418/web-eos-project
  */
 
-// Global variables
 let currentTheme = 'light';
 let calcDisplay = '0';
 let calcHistory = [];
@@ -79,8 +78,7 @@ const greetingsByPeriod = {
     ],
 };
 
-// Initialize application
-document.addEventListener('DOMContentLoaded', function() {
+$(function() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
         currentTheme = savedTheme;
@@ -91,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
     restoreCalcHistory();
 });
 
-// Main initialization function
 function initializeApp() {
     initParticles();
     initTypedText();
@@ -99,134 +96,167 @@ function initializeApp() {
     initCalculator();
     updateDateTime();
 
-    // Update date and time every second
     setInterval(updateDateTime, 1000);
 
-    // Start animations after a short delay
+    $('.reveal').hide();
     setTimeout(() => {
-        startAnimations();
-    }, 500);
+        $('.reveal').each(function(index) {
+            $(this).delay(index * 150).fadeIn(400);
+        });
+    }, 400);
 }
 
-// Particle background functions
 function initParticles() {
-    const sketch = (p) => {
-        let particles = [];
-        
-        p.setup = () => {
-            const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
-            canvas.parent('particles-canvas');
-            
-            // Initialize particles
-            for (let i = 0; i < 50; i++) {
-                particles.push({
-                    x: p.random(p.width),
-                    y: p.random(p.height),
-                    vx: p.random(-1, 1),
-                    vy: p.random(-1, 1),
-                    size: p.random(2, 6),
-                    opacity: p.random(0.3, 0.8)
-                });
-            }
+    const $container = $('#particles-canvas');
+    const canvas = $('<canvas aria-hidden="true"></canvas>').appendTo($container)[0];
+    const ctx = canvas.getContext('2d');
+    const particles = [];
+    const particleCount = 45;
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function createParticle() {
+        return {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() * 2 - 1) * 0.8,
+            vy: (Math.random() * 2 - 1) * 0.8,
+            size: Math.random() * 3 + 2,
+            opacity: Math.random() * 0.4 + 0.3,
         };
-        
-        p.draw = () => {
-            p.clear();
-            
-            // Draw particles
-            particles.forEach(particle => {
-                p.fill(255, 255, 255, particle.opacity * 255);
-                p.noStroke();
-                p.circle(particle.x, particle.y, particle.size);
-                
-                // Update position
-                particle.x += particle.vx;
-                particle.y += particle.vy;
-                
-                // Bounce off edges
-                if (particle.x < 0 || particle.x > p.width) particle.vx *= -1;
-                if (particle.y < 0 || particle.y > p.height) particle.vy *= -1;
-            });
-            
-            // Draw connections
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dist = p.dist(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
-                    if (dist < 100) {
-                        p.stroke(255, 255, 255, (1 - dist / 100) * 50);
-                        p.strokeWeight(1);
-                        p.line(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
-                    }
+    }
+
+    function init() {
+        resizeCanvas();
+        particles.length = 0;
+        for (let i = 0; i < particleCount; i += 1) {
+            particles.push(createParticle());
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((p) => {
+            ctx.fillStyle = `rgba(255,255,255,${p.opacity})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        });
+
+        for (let i = 0; i < particles.length; i += 1) {
+            for (let j = i + 1; j < particles.length; j += 1) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 110) {
+                    ctx.strokeStyle = `rgba(255,255,255,${(1 - dist / 110) * 0.25})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
                 }
             }
-        };
-        
-        p.windowResized = () => {
-            p.resizeCanvas(p.windowWidth, p.windowHeight);
-        };
-    };
-    
-    new p5(sketch);
-}
+        }
 
-// Typed text animation
-function initTypedText() {
-    const typed = new Typed('#typed-text', {
-        strings: [
-            'Hello, World!',
-            'Web EOS Project',
-            'Client-Side Development',
-            'Interactive Web Authoring',
-        ],
-        typeSpeed: 80,
-        backSpeed: 50,
-        backDelay: 2000,
-        loop: true,
-        showCursor: true,
-        cursorChar: '|'
+        requestAnimationFrame(draw);
+    }
+
+    $(window).on('resize', () => {
+        resizeCanvas();
     });
+
+    init();
+    draw();
 }
 
-// Mobile menu toggle
-function initMobileMenu() {
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+function initTypedText() {
+    const phrases = [
+        'Hello, World!',
+        'Web EOS Project',
+        'Client-Side Development',
+        'Interactive Web Authoring',
+    ];
+    const $target = $('#typed-text');
+    let currentPhrase = 0;
+    let currentIndex = 0;
+    let typingForward = true;
 
-    if (!mobileMenuBtn || !mobileMenu) {
+    function updateText() {
+        const fullText = phrases[currentPhrase];
+        const visibleText = fullText.substring(0, currentIndex);
+        $target.text(visibleText + (typingForward ? '|' : ''));
+    }
+
+    function typeLoop() {
+        const fullText = phrases[currentPhrase];
+
+        if (typingForward) {
+            if (currentIndex < fullText.length) {
+                currentIndex += 1;
+            } else {
+                typingForward = false;
+                setTimeout(typeLoop, 900);
+                updateText();
+                return;
+            }
+        } else {
+            if (currentIndex > 0) {
+                currentIndex -= 1;
+            } else {
+                typingForward = true;
+                currentPhrase = (currentPhrase + 1) % phrases.length;
+            }
+        }
+
+        updateText();
+        setTimeout(typeLoop, typingForward ? 90 : 45);
+    }
+
+    updateText();
+    setTimeout(typeLoop, 200);
+}
+
+function initMobileMenu() {
+    const $mobileMenuBtn = $('#mobile-menu-btn');
+    const $mobileMenu = $('#mobile-menu');
+
+    if (!$mobileMenuBtn.length || !$mobileMenu.length) {
         return;
     }
 
-    const handleTransitionEnd = (event) => {
-        if (event.propertyName !== 'max-height') {
-            return;
-        }
-
-        if (!mobileMenu.classList.contains('open')) {
-            mobileMenu.classList.add('hidden');
-        }
-
-        mobileMenu.removeEventListener('transitionend', handleTransitionEnd);
-    };
-
-    mobileMenuBtn.addEventListener('click', () => {
-        const isMenuOpen = mobileMenu.classList.contains('open') && !mobileMenu.classList.contains('hidden');
-
-        if (!isMenuOpen) {
-            mobileMenu.classList.remove('hidden');
-            mobileMenu.removeEventListener('transitionend', handleTransitionEnd);
-            void mobileMenu.offsetHeight;
-            mobileMenu.classList.add('open');
+    $mobileMenuBtn.on('click', () => {
+        const isOpen = $mobileMenu.hasClass('open') && !$mobileMenu.hasClass('hidden');
+        if (!isOpen) {
+            $mobileMenu.removeClass('hidden');
+            void $mobileMenu[0].offsetHeight;
+            $mobileMenu.addClass('open');
         } else {
-            mobileMenu.classList.remove('open');
-            mobileMenu.addEventListener('transitionend', handleTransitionEnd);
+            $mobileMenu.removeClass('open');
+            $mobileMenu.one('transitionend', (event) => {
+                if (event.originalEvent && event.originalEvent.propertyName !== 'max-height') {
+                    return;
+                }
+                $mobileMenu.addClass('hidden');
+            });
         }
     });
 }
 
-// Calculator functions
 function initCalculator() {
     calcDisplay = '0';
     updateCalcDisplay();
+    $('.calc-button').button();
 }
 
 function appendToDisplay(value) {
@@ -257,7 +287,7 @@ function calculate() {
         const result = eval(calcDisplay);
         calcHistory.unshift(`${calcDisplay} = ${result}`);
         if (calcHistory.length > 5) calcHistory.pop();
-        
+
         calcDisplay = result.toString();
         updateCalcDisplay();
         updateCalcHistory();
@@ -272,22 +302,20 @@ function calculate() {
 }
 
 function updateCalcDisplay() {
-    const display = document.getElementById('calc-display');
-    if (display) {
-        display.value = calcDisplay;
+    const $display = $('#calc-display');
+    if ($display.length) {
+        $display.val(calcDisplay);
     }
 }
 
 function updateCalcHistory() {
-    const historyElement = document.getElementById('calc-history');
-    if (historyElement) {
-        historyElement.textContent = calcHistory.length > 0 ? calcHistory[0] : 'None';
+    const $history = $('#calc-history');
+    if ($history.length) {
+        $history.text(calcHistory.length > 0 ? calcHistory[0] : 'None');
     }
 }
 
-// Listen for keyboard input
-document.addEventListener('keydown', function(e) {    
-    // Calculator input
+document.addEventListener('keydown', function(e) {
     if (e.key >= '0' && e.key <= '9') {
         appendToDisplay(e.key);
     } else if (e.key === '.') {
@@ -303,15 +331,12 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Save calculator history before unload
 window.addEventListener('beforeunload', function() {
-    // Save only if there is history
     if (calcHistory.length > 0) {
         localStorage.setItem('calcHistory', JSON.stringify(calcHistory));
     }
 });
 
-// Restore calculator history on load
 function restoreCalcHistory() {
     const savedHistory = localStorage.getItem('calcHistory');
     if (!savedHistory) {
@@ -329,7 +354,6 @@ function restoreCalcHistory() {
     }
 }
 
-// Date and time function
 function updateDateTime() {
     const now = new Date();
     const timeElement = document.getElementById('current-time');
@@ -395,7 +419,6 @@ function getRandomGreeting(periodKey) {
     return greetings[index];
 }
 
-// Theme toggle function
 function toggleTheme() {
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     applyTheme(newTheme);

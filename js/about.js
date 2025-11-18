@@ -12,8 +12,7 @@
 
 let currentTheme = 'light';
 
-// Initialize page behaviour
-window.addEventListener('DOMContentLoaded', () => {
+$(async function() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
         currentTheme = savedTheme;
@@ -22,100 +21,102 @@ window.addEventListener('DOMContentLoaded', () => {
     applyTheme(currentTheme);
     initParticles();
     initMobileMenu();
-    initGitHubProfiles();
+    await initGitHubProfiles();
 });
 
 function initParticles() {
-    if (typeof p5 === 'undefined') {
-        return;
+    const $container = $('#particles-canvas');
+    const canvas = $('<canvas aria-hidden="true"></canvas>').appendTo($container)[0];
+    const ctx = canvas.getContext('2d');
+    const particles = [];
+    const particleCount = 45;
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
 
-    const sketch = (p) => {
-        const particles = [];
-        const PARTICLE_COUNT = 45;
-
-        p.setup = () => {
-            const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
-            canvas.parent('particles-canvas');
-
-            for (let i = 0; i < PARTICLE_COUNT; i++) {
-                particles.push({
-                    x: p.random(p.width),
-                    y: p.random(p.height),
-                    vx: p.random(-1, 1),
-                    vy: p.random(-1, 1),
-                    size: p.random(2, 5),
-                    opacity: p.random(0.3, 0.7)
-                });
-            }
+    function createParticle() {
+        return {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() * 2 - 1) * 0.8,
+            vy: (Math.random() * 2 - 1) * 0.8,
+            size: Math.random() * 3 + 2,
+            opacity: Math.random() * 0.4 + 0.3,
         };
+    }
 
-        p.draw = () => {
-            p.clear();
+    function init() {
+        resizeCanvas();
+        particles.length = 0;
+        for (let i = 0; i < particleCount; i += 1) {
+            particles.push(createParticle());
+        }
+    }
 
-            particles.forEach((particle) => {
-                p.fill(255, 255, 255, particle.opacity * 255);
-                p.noStroke();
-                p.circle(particle.x, particle.y, particle.size);
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                particle.x += particle.vx;
-                particle.y += particle.vy;
+        particles.forEach((p) => {
+            ctx.fillStyle = `rgba(255,255,255,${p.opacity})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
 
-                if (particle.x < 0 || particle.x > p.width) particle.vx *= -1;
-                if (particle.y < 0 || particle.y > p.height) particle.vy *= -1;
-            });
+            p.x += p.vx;
+            p.y += p.vy;
 
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dist = p.dist(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
-                    if (dist < 110) {
-                        p.stroke(255, 255, 255, (1 - dist / 110) * 60);
-                        p.strokeWeight(1);
-                        p.line(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
-                    }
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        });
+
+        for (let i = 0; i < particles.length; i += 1) {
+            for (let j = i + 1; j < particles.length; j += 1) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 110) {
+                    ctx.strokeStyle = `rgba(255,255,255,${(1 - dist / 110) * 0.25})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
                 }
             }
-        };
+        }
 
-        p.windowResized = () => {
-            p.resizeCanvas(p.windowWidth, p.windowHeight);
-        };
-    };
+        requestAnimationFrame(draw);
+    }
 
-    new p5(sketch);
+    $(window).on('resize', resizeCanvas);
+    init();
+    draw();
 }
 
 function initMobileMenu() {
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+    const $mobileMenuBtn = $('#mobile-menu-btn');
+    const $mobileMenu = $('#mobile-menu');
 
-    if (!mobileMenuBtn || !mobileMenu) {
+    if (!$mobileMenuBtn.length || !$mobileMenu.length) {
         return;
     }
 
-    const handleTransitionEnd = (event) => {
-        if (event.propertyName !== 'max-height') {
-            return;
-        }
-
-        if (!mobileMenu.classList.contains('open')) {
-            mobileMenu.classList.add('hidden');
-        }
-
-        mobileMenu.removeEventListener('transitionend', handleTransitionEnd);
-    };
-
-    mobileMenuBtn.addEventListener('click', () => {
-        const isMenuOpen = mobileMenu.classList.contains('open') && !mobileMenu.classList.contains('hidden');
-
-        if (!isMenuOpen) {
-            mobileMenu.classList.remove('hidden');
-            mobileMenu.removeEventListener('transitionend', handleTransitionEnd);
-            void mobileMenu.offsetHeight;
-            mobileMenu.classList.add('open');
+    $mobileMenuBtn.on('click', () => {
+        const isOpen = $mobileMenu.hasClass('open') && !$mobileMenu.hasClass('hidden');
+        if (!isOpen) {
+            $mobileMenu.removeClass('hidden');
+            void $mobileMenu[0].offsetHeight;
+            $mobileMenu.addClass('open');
         } else {
-            mobileMenu.classList.remove('open');
-            mobileMenu.addEventListener('transitionend', handleTransitionEnd);
+            $mobileMenu.removeClass('open');
+            $mobileMenu.one('transitionend', (event) => {
+                if (event.originalEvent && event.originalEvent.propertyName !== 'max-height') {
+                    return;
+                }
+                $mobileMenu.addClass('hidden');
+            });
         }
     });
 }
@@ -198,113 +199,68 @@ async function populateGitHubCard(card, username) {
 
         if (elements.meta) {
             elements.meta.innerHTML = '';
-
-            if (userData.company) {
-                const companyLine = document.createElement('div');
-                companyLine.textContent = `🏢 ${userData.company}`;
-                elements.meta.appendChild(companyLine);
-            }
-
             if (userData.location) {
-                const locationLine = document.createElement('div');
-                locationLine.textContent = `📍 ${userData.location}`;
-                elements.meta.appendChild(locationLine);
+                const location = document.createElement('div');
+                location.textContent = `📍 ${userData.location}`;
+                elements.meta.appendChild(location);
             }
-
+            if (userData.company) {
+                const company = document.createElement('div');
+                company.textContent = `🏢 ${userData.company}`;
+                elements.meta.appendChild(company);
+            }
             if (userData.blog) {
-                const blogUrl = userData.blog.startsWith('http') ? userData.blog : `https://${userData.blog}`;
-                const blogLine = document.createElement('div');
-                const blogAnchor = document.createElement('a');
-                blogAnchor.href = blogUrl;
-                blogAnchor.target = '_blank';
-                blogAnchor.rel = 'noopener';
-                blogAnchor.className = 'text-teal-200 hover:text-teal-100';
-                blogAnchor.textContent = blogUrl;
-                blogLine.textContent = '🔗 ';
-                blogLine.appendChild(blogAnchor);
-                elements.meta.appendChild(blogLine);
+                const blog = document.createElement('div');
+                const blogLink = document.createElement('a');
+                blogLink.href = userData.blog.startsWith('http') ? userData.blog : `https://${userData.blog}`;
+                blogLink.textContent = userData.blog;
+                blogLink.className = 'text-teal-300 hover:text-teal-200';
+                blogLink.target = '_blank';
+                blogLink.rel = 'noopener';
+                blog.appendChild(blogLink);
+                elements.meta.appendChild(blog);
             }
-
-            elements.meta.style.display = elements.meta.childElementCount ? '' : 'none';
         }
 
-        if (elements.reposList) {
-            const topRepos = Array.isArray(reposData)
-                ? reposData
-                    .filter((repo) => !repo.fork)
-                    .sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0))
-                    .slice(0, 3)
-                : [];
+        if (elements.reposList && Array.isArray(reposData)) {
+            const topRepos = reposData
+                .filter((repo) => !repo.fork)
+                .sort((a, b) => (b.stargazers_count || 0) - (a.stargazers_count || 0))
+                .slice(0, 5);
 
             elements.reposList.innerHTML = '';
 
-            if (!topRepos.length) {
-                const emptyItem = document.createElement('li');
-                emptyItem.className = 'text-white/60';
-                emptyItem.textContent = 'No highlighted repositories available yet.';
-                elements.reposList.appendChild(emptyItem);
+            if (topRepos.length === 0) {
+                const noRepo = document.createElement('li');
+                noRepo.textContent = 'No public repositories yet.';
+                noRepo.className = 'text-white/60';
+                elements.reposList.appendChild(noRepo);
             } else {
                 topRepos.forEach((repo) => {
-                    const listItem = document.createElement('li');
-                    listItem.className = 'flex flex-col gap-1 rounded-2xl bg-white/5 px-4 py-3';
-
-                    const repoLink = document.createElement('a');
-                    repoLink.href = repo.html_url;
-                    repoLink.target = '_blank';
-                    repoLink.rel = 'noopener';
-                    repoLink.className = 'text-teal-200 hover:text-teal-100 font-medium transition';
-                    repoLink.textContent = repo.name;
-
-                    const repoMeta = document.createElement('div');
-                    repoMeta.className = 'text-xs text-white/70 flex flex-wrap gap-3';
-
-                    const stars = document.createElement('span');
-                    stars.textContent = `⭐ ${repo.stargazers_count}`;
-                    repoMeta.appendChild(stars);
-
-                    if (repo.language) {
-                        const language = document.createElement('span');
-                        language.textContent = repo.language;
-                        repoMeta.appendChild(language);
-                    }
-
-                    const updated = document.createElement('span');
-                    const updatedDate = repo.pushed_at ? new Date(repo.pushed_at) : null;
-                    if (updatedDate) {
-                        updated.textContent = `Updated ${updatedDate.toLocaleDateString()}`;
-                        repoMeta.appendChild(updated);
-                    }
-
-                    listItem.appendChild(repoLink);
-                    listItem.appendChild(repoMeta);
-                    elements.reposList.appendChild(listItem);
+                    const item = document.createElement('li');
+                    item.innerHTML = `
+                        <a href="${repo.html_url}" target="_blank" rel="noopener" class="text-white hover:text-teal-200">${repo.name}</a>
+                        <span class="text-white/60">★ ${repo.stargazers_count || 0}</span>
+                    `;
+                    elements.reposList.appendChild(item);
                 });
             }
         }
     } catch (error) {
+        if (elements.name) {
+            elements.name.textContent = 'Profile unavailable';
+        }
         if (elements.bio) {
-            elements.bio.textContent = 'Unable to load GitHub profile details at this time.';
+            elements.bio.textContent = 'Unable to load GitHub data at the moment. Please try again later.';
         }
-
-        if (elements.reposList) {
-            elements.reposList.innerHTML = '';
-            const errorItem = document.createElement('li');
-            errorItem.className = 'text-white/60';
-            errorItem.textContent = 'Unable to fetch repository information.';
-            elements.reposList.appendChild(errorItem);
-        }
-
-        if (elements.meta) {
-            elements.meta.innerHTML = '';
-            elements.meta.style.display = 'none';
-        }
+        console.error('Failed to load GitHub profile:', error);
     }
 }
 
-window.toggleTheme = function toggleTheme() {
+function toggleTheme() {
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     applyTheme(newTheme);
-};
+}
 
 function applyTheme(theme) {
     currentTheme = theme;

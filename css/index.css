@@ -50,6 +50,11 @@ body.dark-theme {
     animation: gradientShift 3s ease-in-out infinite;
 }
 
+#typed-text {
+    display: inline-block;
+    min-height: 0.9em;
+}
+
 @keyframes gradientShift {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }

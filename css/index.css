@@ -111,11 +111,12 @@ body.dark-theme {
 }
 
 .calculator {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 20px;
     padding: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 24px 50px rgba(15, 23, 42, 0.45);
 }
 
 .calc-button {
@@ -159,12 +160,12 @@ body.dark-theme {
 }
 
 .info-card {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 18px 30px rgba(26, 54, 93, 0.18);
+    box-shadow: 0 24px 50px rgba(15, 23, 42, 0.45);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(148, 163, 184, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -174,12 +175,12 @@ body.dark-theme {
 .info-card__title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--primary-blue);
+    color: #e5e7eb;
 }
 
 .info-card__body {
     line-height: 1.6;
-    color: #1f2937;
+    color: rgba(255, 255, 255, 0.85);
     font-size: 1rem;
 }
 
@@ -189,14 +190,15 @@ body.dark-theme .glass-nav {
 }
 
 body.dark-theme .calculator {
-    background: var(--surface-dark);
-    box-shadow: var(--shadow-dark);
+    background: rgba(15, 30, 60, 0.7);
+    border-color: rgba(148, 163, 184, 0.35);
+    box-shadow: 0 24px 50px rgba(8, 16, 32, 0.5);
 }
 
 body.dark-theme .info-card {
-    background: var(--surface-dark);
-    border-color: rgba(148, 163, 184, 0.2);
-    box-shadow: var(--shadow-dark);
+    background: rgba(15, 30, 60, 0.7);
+    border-color: rgba(148, 163, 184, 0.35);
+    box-shadow: 0 24px 50px rgba(8, 16, 32, 0.5);
 }
 
 body.dark-theme .info-card__title {

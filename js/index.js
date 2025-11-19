@@ -14,6 +14,7 @@ let currentTheme = 'light';
 let calcDisplay = '0';
 let calcHistory = [];
 let lastGreetingPeriod = null;
+let calendarDate = new Date();
 
 const greetingsByPeriod = {
     morning: [
@@ -94,6 +95,7 @@ function initializeApp() {
     initTypedText();
     initMobileMenu();
     initCalculator();
+    initCalendar();
     updateDateTime();
 
     setInterval(updateDateTime, 1000);
@@ -352,6 +354,79 @@ function restoreCalcHistory() {
     } catch (error) {
         console.error('Failed to restore calculator history:', error);
     }
+}
+
+function initCalendar() {
+    const $month = $('#calendar-month');
+    const $year = $('#calendar-year');
+    const $days = $('#calendar-days');
+
+    if (!$month.length || !$year.length || !$days.length) {
+        return;
+    }
+
+    renderCalendar();
+
+    $('#calendar-prev').on('click', () => changeMonth(-1));
+    $('#calendar-next').on('click', () => changeMonth(1));
+}
+
+function changeMonth(offset) {
+    calendarDate.setMonth(calendarDate.getMonth() + offset);
+    renderCalendar();
+}
+
+function renderCalendar() {
+    const monthNames = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const year = calendarDate.getFullYear();
+    const month = calendarDate.getMonth();
+
+    const firstDay = new Date(year, month, 1);
+    const startDayIndex = firstDay.getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+    $('#calendar-month').text(monthNames[month]);
+    $('#calendar-year').text(year);
+
+    const days = [];
+
+    for (let i = startDayIndex; i > 0; i -= 1) {
+        days.push({ day: daysInPrevMonth - i + 1, muted: true });
+    }
+
+    for (let day = 1; day <= daysInMonth; day += 1) {
+        days.push({ day, muted: false });
+    }
+
+    let nextMonthDay = 1;
+    while (days.length % 7 !== 0) {
+        days.push({ day: nextMonthDay, muted: true });
+        nextMonthDay += 1;
+    }
+
+    const today = new Date();
+    const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+
+    const dayCells = days.map((item) => {
+        const classes = ['calendar__day'];
+
+        if (item.muted) {
+            classes.push('calendar__day--muted');
+        }
+
+        if (isCurrentMonth && !item.muted && item.day === today.getDate()) {
+            classes.push('calendar__day--today');
+        }
+
+        return `<div class="${classes.join(' ')}">${item.day}</div>`;
+    });
+
+    $('#calendar-days').html(dayCells.join(''));
 }
 
 function updateDateTime() {

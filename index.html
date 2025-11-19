@@ -175,6 +175,36 @@
         </div>
     </section>
 
+    <!-- Calendar -->
+    <section class="py-20 px-6">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-4xl font-bold text-white text-center mb-12">Calendar</h2>
+
+            <div class="calendar glass-panel">
+                <div class="calendar__header">
+                    <button id="calendar-prev" class="calendar__nav" aria-label="Previous month">◀</button>
+                    <div>
+                        <div id="calendar-month" class="calendar__month"></div>
+                        <div id="calendar-year" class="calendar__year"></div>
+                    </div>
+                    <button id="calendar-next" class="calendar__nav" aria-label="Next month">▶</button>
+                </div>
+
+                <div class="calendar__weekdays">
+                    <span>Sun</span>
+                    <span>Mon</span>
+                    <span>Tue</span>
+                    <span>Wed</span>
+                    <span>Thu</span>
+                    <span>Fri</span>
+                    <span>Sat</span>
+                </div>
+
+                <div id="calendar-days" class="calendar__days"></div>
+            </div>
+        </div>
+    </section>
+
     <footer class="bg-gray-900 text-white py-12 px-6">
         <div class="max-w-7xl mx-auto text-center">
             <div class="mb-8">

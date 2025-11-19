@@ -141,11 +141,17 @@ function initContactForm() {
             return '';
         },
         email: (value) => {
-            if (!value.trim()) {
+            const trimmedValue = value.trim();
+            if (!trimmedValue) {
                 return 'Please enter your email address.';
             }
+
+            if (trimmedValue.includes('..')) {
+                return 'Please enter a valid email address.';
+            }
+
             const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-            if (!emailPattern.test(value.trim())) {
+            if (!emailPattern.test(trimmedValue)) {
                 return 'Please enter a valid email address.';
             }
             return '';

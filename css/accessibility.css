@@ -1,8 +1,14 @@
 :root {
-    --vision-banner-bg: #0b1530;
+    --vision-banner-bg: linear-gradient(90deg, #0b1530, #0f172a);
     --vision-banner-text: #e5e7eb;
-    --vision-banner-accent: #38bdf8;
+    --vision-banner-accent: #f97316;
     --vision-opaque-surface: rgba(15, 23, 42, 0.94);
+    --vision-page-light: #ffffff;
+    --vision-page-dark: #000000;
+    --vision-text-light: #000000;
+    --vision-text-dark: #ffffff;
+    --vision-surface-light: #ffffff;
+    --vision-surface-dark: #000000;
 }
 
 .accessibility-banner {
@@ -16,11 +22,11 @@
     justify-content: space-between;
     gap: 12px;
     padding: 10px 16px;
-    background: linear-gradient(90deg, var(--vision-banner-bg), #0f172a);
+    background: var(--vision-banner-bg);
     color: var(--vision-banner-text);
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--vision-border-color, rgba(255, 255, 255, 0.12));
 }
 
 .accessibility-banner__text {
@@ -32,7 +38,7 @@
 }
 
 .accessibility-banner__text strong {
-    color: #ffffff;
+    color: inherit;
 }
 
 .accessibility-banner__actions {
@@ -42,9 +48,9 @@
 }
 
 .accessibility-banner__button {
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(56, 189, 248, 0.15);
-    color: #ffffff;
+    border: 1px solid var(--vision-border-color, rgba(0, 0, 0, 0.18));
+    background: rgba(249, 115, 22, 0.15);
+    color: currentColor;
     padding: 6px 12px;
     border-radius: 9999px;
     font-size: 13px;
@@ -57,13 +63,13 @@
 .accessibility-banner__button:focus-visible {
     outline: none;
     transform: translateY(-1px);
-    background: rgba(56, 189, 248, 0.3);
-    border-color: rgba(56, 189, 248, 0.6);
+    background: rgba(249, 115, 22, 0.28);
+    border-color: rgba(249, 115, 22, 0.65);
 }
 
 .accessibility-banner__button--secondary {
     background: transparent;
-    color: rgba(229, 231, 235, 0.9);
+    color: inherit;
 }
 
 body.has-accessibility-banner {
@@ -75,8 +81,24 @@ body.has-accessibility-banner .glass-nav {
 }
 
 body.vision-mode-active {
-    background-color: #0b1224;
-    color: #e5e7eb;
+    --vision-banner-bg: var(--vision-page-light);
+    --vision-banner-text: var(--vision-text-light);
+    --vision-opaque-surface: var(--vision-surface-light);
+    --vision-body-text: var(--vision-text-light);
+    --vision-page-color: var(--vision-page-light);
+    --vision-border-color: #1f2937;
+    background-color: var(--vision-page-color);
+    color: var(--vision-body-text);
+}
+
+body.vision-mode-active.dark-theme {
+    --vision-banner-bg: var(--vision-page-dark);
+    --vision-banner-text: var(--vision-text-dark);
+    --vision-opaque-surface: var(--vision-surface-dark);
+    --vision-body-text: var(--vision-text-dark);
+    --vision-page-color: var(--vision-page-dark);
+    --vision-border-color: #e5e7eb;
+    color: var(--vision-body-text);
 }
 
 body.vision-mode-active * {
@@ -99,7 +121,7 @@ body.vision-mode-active article,
 body.vision-mode-active .content-section {
     background-color: var(--vision-opaque-surface) !important;
     backdrop-filter: none !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
+    border-color: var(--vision-border-color) !important;
     opacity: 1 !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
 }
@@ -107,7 +129,7 @@ body.vision-mode-active .content-section {
 body.vision-mode-active .glass-nav a,
 body.vision-mode-active .glass-nav .text-white,
 body.vision-mode-active .glass-nav .hover\:text-teal-300 {
-    color: #e0f2fe !important;
+    color: var(--vision-body-text) !important;
 }
 
 body.vision-mode-active #particles-canvas,
@@ -139,7 +161,7 @@ body.vision-mode-active button:focus-visible,
 body.vision-mode-active input:focus-visible,
 body.vision-mode-active textarea:focus-visible {
     outline: 2px solid var(--vision-banner-accent);
-    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.35);
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.28);
 }
 
 body.vision-mode-active .hero-title,
@@ -147,7 +169,7 @@ body.vision-mode-active h1,
 body.vision-mode-active h2,
 body.vision-mode-active h3,
 body.vision-mode-active h4 {
-    color: #f8fafc !important;
+    color: var(--vision-body-text) !important;
     text-shadow: none !important;
 }
 
@@ -161,36 +183,36 @@ body.vision-mode-active .text-gray-300,
 body.vision-mode-active .text-white\/80,
 body.vision-mode-active .text-white\/85,
 body.vision-mode-active .text-white\/90 {
-    color: #e5e7eb !important;
+    color: var(--vision-body-text) !important;
     opacity: 1 !important;
 }
 
 body.vision-mode-active .text-gray-400 {
-    color: #cbd5e1 !important;
+    color: var(--vision-body-text) !important;
 }
 
 body.vision-mode-active .text-white\/80,
 body.vision-mode-active .text-white\/85,
 body.vision-mode-active .text-white\/90 {
-    color: #e2e8f0 !important;
+    color: var(--vision-body-text) !important;
 }
 
 body.vision-mode-active .calendar__weekdays span {
-    color: #cbd5e1 !important;
+    color: var(--vision-body-text) !important;
 }
 
 body.vision-mode-active .info-card__title,
 body.vision-mode-active .tech-modal__title {
-    color: #e2e8f0 !important;
+    color: var(--vision-body-text) !important;
 }
 
 body.vision-mode-active .info-card__body,
 body.vision-mode-active .tech-modal__body {
-    color: #cbd5e1 !important;
+    color: var(--vision-body-text) !important;
 }
 
 body.vision-mode-active .tech-modal {
-    background: rgba(0, 0, 0, 0.8) !important;
+    background: var(--vision-page-color) !important;
 }
 
 body.vision-mode-active .contact-card,
@@ -209,9 +231,9 @@ body.vision-mode-active .contact-form input,
 body.vision-mode-active .contact-form textarea,
 body.vision-mode-active #contact-form input,
 body.vision-mode-active #contact-form textarea {
-    background-color: #0f172a !important;
-    color: #e2e8f0 !important;
-    border-color: rgba(226, 232, 240, 0.4) !important;
+    background-color: var(--vision-page-color) !important;
+    color: var(--vision-body-text) !important;
+    border-color: var(--vision-border-color) !important;
 }
 
 body.vision-mode-active .contact-form input:focus,
@@ -219,7 +241,7 @@ body.vision-mode-active .contact-form textarea:focus,
 body.vision-mode-active #contact-form input:focus,
 body.vision-mode-active #contact-form textarea:focus {
     border-color: var(--vision-banner-accent) !important;
-    box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25) !important;
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.25) !important;
 }
 
 body.vision-mode-active .github-card {
@@ -228,6 +250,6 @@ body.vision-mode-active .github-card {
 
 body.vision-mode-active .stats-grid div,
 body.vision-mode-active .contact-form__feedback {
-    background: rgba(15, 23, 42, 0.85) !important;
-    color: #e5e7eb !important;
+    background: var(--vision-opaque-surface) !important;
+    color: var(--vision-body-text) !important;
 }

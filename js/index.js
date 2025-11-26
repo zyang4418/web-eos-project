@@ -21,6 +21,7 @@ const technologyDetails = {
     html5: {
         title: 'HTML5',
         content: `
+            <div class="tech-modal__media"><img src="./images/HTML5.png" alt="HTML5 logo" class="tech-modal__image"></div>
             <p>This project uses modern HTML5 structure to define semantic page layout across files like index.html, about.html, and contact.html. Elements such as &lt;header&gt;, &lt;section&gt;, &lt;nav&gt;, and &lt;canvas&gt; help describe meaningful content rather than using generic &lt;div&gt; blocks. For instance, the particle animation background is rendered via a dynamically injected &lt;canvas&gt; element created in JavaScript.</p>
             <p>HTML5 also supports interactive components that work together with JavaScript logic. Forms on contact.html include semantic input fields such as &lt;input type="email"&gt;, ensuring browser-native validation behaviors before custom validation is applied. This structural foundation allows JavaScript and CSS to enhance interaction rather than defining layout alone.</p>
         `,
@@ -28,6 +29,7 @@ const technologyDetails = {
     css: {
         title: 'CSS',
         content: `
+            <div class="tech-modal__media"><img src="./images/CSS.png" alt="CSS logo" class="tech-modal__image"></div>
             <p>This project uses extensive custom CSS styles across files like index.css, about.css, and contact.css, defining typography, layout, animations, and themes. The design centers around CSS variables in :root, enabling a centralized palette (--primary-blue, --tech-blue, etc.) that ensures consistent branding across pages. These variables also support theme switching, where alternate colors activate when the .dark-theme class is applied to the &lt;body&gt; element.</p>
             <p>The styling makes heavy use of glassmorphism, gradients, shadows, and blur effects. For example, navigation bars use translucent backgrounds with backdrop-filter: blur(10px) and fading borders to create a layered UI style. Interactive elements like .calc-button include hover transformations and shadows to provide tactile feedback, enhancing perception and usability.</p>
             <p>CSS here also handles layout responsiveness without external frameworks. Menus like .mobile-menu rely on max-height, opacity, and transform transitions rather than display: none, enabling smooth animations between states. The project uses grid layout in the calendar (display: grid; grid-template-columns: repeat(7, 1fr)) to create a clean and uniform structure. These techniques demonstrate modern CSS capabilities without dependency on Bootstrap or Tailwind.</p>
@@ -36,6 +38,7 @@ const technologyDetails = {
     lighthouse: {
         title: 'Google Lighthouse',
         content: `
+            <div class="tech-modal__media"><img src="./images/Google_Lighthouse.png" alt="Google Lighthouse logo" class="tech-modal__image"></div>
             <p>The project demonstrates a number of development practices that align with Lighthouse evaluation criteria. For example, CSS variables consolidate theme colors and prevent repetitive declarations, improving maintainability and reducing stylesheet size. Animated UI components use GPU-friendly transforms (transform rather than top/left) to maintain smooth rendering performance, as seen in the floating elements and button hover animations.</p>
             <p>Lighthouse also evaluates accessibility, and this project contains multiple attributes designed to meet accessibility requirements. The particle background canvas is injected with aria-hidden="true", ensuring assistive technologies ignore visual-only elements. Form validation provides real-time feedback with descriptive error messages ("Please enter your email address.") rather than generic errors, improving usability for keyboard and screen-reader users.</p>
             <p>The project also aligns with Lighthouse’s performance and best-practice guidelines by storing data in localStorage—such as theme preferences and calculator history—allowing UI state to persist across reloads without server requests. Combined with lightweight HTML structure and client-side routing through multiple static pages, the site avoids unnecessary rendering cost or network overhead.</p>
@@ -68,6 +71,7 @@ const technologyDetails = {
     jquery: {
         title: 'jQuery',
         content: `
+            <div class="tech-modal__media"><img src="./images/JQuery.png" alt="jQuery logo" class="tech-modal__image"></div>
             <p>jQuery serves as the primary engine for DOM traversal, event registration, and UI initialization across the entire project. All three main scripts begin with $(function() { ... }), ensuring logic runs only after the DOM is fully loaded. This includes setup tasks such as loading saved themes, initializing the particle system, binding navigation button events, and, on the contact page, wiring up form validation behavior.</p>
             <p>The project uses jQuery to manipulate elements dynamically rather than relying on static HTML. For example, the particle system creates and appends a &lt;canvas&gt; element using const canvas = $('&lt;canvas ...&gt;').appendTo(...), then uses jQuery’s object wrapper for event binding like $(window).on('resize', resizeCanvas). Similarly, the mobile menu toggles visibility by conditionally adding and removing classes like .open and .hidden, relying on jQuery’s .on('click', ...) and class utilities rather than native listeners.</p>
             <p>jQuery is also used to enhance components visually and behaviorally. In the calculator page, buttons are initialized with .button(), invoking jQuery UI's widget layer to apply styling and interactions. Meanwhile, sequential fade-in animations are implemented via chained transitions using .delay().fadeIn(400), illustrating how jQuery simplifies asynchronous UI sequencing. The combination of jQuery with small amounts of native JavaScript provides both convenience and performance where needed.</p>
@@ -76,6 +80,7 @@ const technologyDetails = {
     'jquery-ui': {
         title: 'jQuery UI',
         content: `
+            <div class="tech-modal__media"><img src="./images/JQuery_UI.png" alt="jQuery UI logo" class="tech-modal__image"></div>
             <p>The project applies jQuery UI primarily to enhance interactive components with richer visuals and behaviors on top of the existing jQuery DOM logic. For example, calculator buttons are initialized using .button(), which transforms ordinary &lt;button&gt; elements into styled, theme-aware UI widgets that respond to hover, focus, and active states more consistently across browsers. This provides a polished tactile feel without manually writing custom CSS for button states.</p>
             <p>In addition to styling, jQuery UI also supplements animation sequencing. Certain elements are revealed with chained animations using methods like .fadeIn() along with .delay(), allowing sequential entrance effects that guide the user’s attention. While these effects could be achieved with CSS transitions, jQuery UI abstracts timing, easing, and event callbacks into a simpler API, reducing implementation complexity while maintaining fine-grained control.</p>
             <p>Unlike other projects that use jQuery UI's full widget library (tabs, accordions, dialogs), this project selectively uses smaller features rather than full UI components. This design choice keeps the interface lightweight while still benefiting from UI enhancements where interaction quality matters most (e.g., calculator input surfaces). This reflects an intentional trade-off: leveraging jQuery UI for polish without over-engineering the interface.</p>

@@ -195,8 +195,14 @@ body.vision-mode-active .tech-modal {
 
 body.vision-mode-active .contact-card,
 body.vision-mode-active .contact-form,
-body.vision-mode-active #contact-form {
+body.vision-mode-active #contact-form,
+body.vision-mode-active .content-section::after {
     background: var(--vision-opaque-surface) !important;
+}
+
+body.vision-mode-active .content-section::after {
+    filter: none !important;
+    opacity: 1 !important;
 }
 
 body.vision-mode-active .contact-form input,
